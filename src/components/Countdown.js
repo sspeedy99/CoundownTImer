@@ -93,6 +93,7 @@ class Countdown extends React.Component {
             <Datepicker/>
           </section>
             <Controls isPaused={isPaused} onPausedToggle={this.togglePaused}/>
+
         </div>
       </div>
       </section>
