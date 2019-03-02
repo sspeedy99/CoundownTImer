@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment'
 import Controls from './Controls'
+import Datepicker from './Datepicker'
 
 class Countdown extends React.Component {
   constructor(props) {
@@ -89,6 +90,7 @@ class Countdown extends React.Component {
                 </div>
               </div>
             </nav>
+            <Datepicker/>
           </section>
             <Controls isPaused={isPaused} onPausedToggle={this.togglePaused}/>
         </div>
