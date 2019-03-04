@@ -65,7 +65,7 @@ class Countdown extends React.Component {
   }
 
   render() {
-      const { isPaused} = this.state,
+      const { isPaused,nextDate} = this.state,
               duration = this.getRemainingTime()
 
     return (
@@ -73,7 +73,7 @@ class Countdown extends React.Component {
       <div className="hero-body">
         <div className="container">
           <h1 className="title has-text-centered">
-            Your Own Countdown Timer!
+            {nextDate.calendar()} Countdown Timer!
           </h1>
           <section className="section">
                   <nav className="level">
