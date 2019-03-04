@@ -8,29 +8,25 @@ class Countdown extends React.Component {
     super(props)
 
     this.state = {
-      duration: this.getRemainingTime(),
+      currentDate: moment(),
+      nextDate: moment({year:moment().year()+1}),
       isPaused: false
     }
     this.togglePaused = this.togglePaused.bind(this)
   }
 
   componentDidMount() {
-    this.interval = setInterval(() => {
-      this.setState({
-        duration:this.getRemainingTime()
-      })
-    },1000)
+    this.resume()
   }
 
   componentWillUnmount(){
-    clearInterval(this.interval)
+    this.pause()
   }
 
 
   getRemainingTime() {
-    let now = moment(),
-        newYear = moment({year:now.year()+1}),
-        diff = newYear.diff(now)
+  let {currentDate,nextDate} = this.state,
+      diff = nextDate.diff(currentDate)
 
     return moment.duration(diff)
   }
@@ -39,13 +35,9 @@ class Countdown extends React.Component {
     this.setState((prevState, props) => {
       const isPaused = !prevState.isPaused
       if(isPaused) {
-        clearInterval(this.interval)
+        this.pause()
       } else {
-        this.interval = setInterval(() => {
-          this.setState({
-            duration:this.getRemainingTime()
-          })
-        },1000)
+          this.resume()
     }
 
     return {
@@ -54,14 +46,34 @@ class Countdown extends React.Component {
   })
   }
 
+  pause() {
+    clearInterval(this.interval)
+  }
+
+  resume() {
+    this.interval = setInterval(() => {
+      this.setState({
+        currentDate:moment()
+      })
+    },1000)
+  }
+
+  handleDateReset = nextDate => {
+    this.setState({
+      nextDate
+    })
+  }
+
   render() {
-      const { duration, isPaused} = this.state
+      const { isPaused} = this.state,
+              duration = this.getRemainingTime()
+
     return (
       <section className="hero is-dark is-bold is-fullheight has-text-centered">
       <div className="hero-body">
         <div className="container">
           <h1 className="title has-text-centered">
-            New Year is coming Soon!
+            Your Own Countdown Timer!
           </h1>
           <section className="section">
                   <nav className="level">
@@ -90,7 +102,7 @@ class Countdown extends React.Component {
                 </div>
               </div>
             </nav>
-            <Datepicker/>
+            <Datepicker onDateReset={this.handleDateReset}/>
           </section>
             <Controls isPaused={isPaused} onPausedToggle={this.togglePaused}/>
 
